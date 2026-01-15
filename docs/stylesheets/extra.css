@@ -1,0 +1,16 @@
+/* Custom styles for the site */
+
+:root {
+  --md-primary-fg-color: #607d8b;
+  --md-accent-fg-color: #3f51b5;
+}
+
+/* Improve code block appearance */
+.highlight {
+  border-radius: 4px;
+}
+
+/* Better spacing for content */
+.md-content {
+  max-width: 900px;
+}

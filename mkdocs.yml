@@ -1,6 +1,7 @@
 site_name: Embedded Notes
-site_description: Linux • Embedded • Multimedia
+site_description: Embedded programming tutorials, projects, and more
 site_url: https://quocbuu.github.io
+site_author: Quoc Buu
 
 theme:
   name: material
@@ -9,14 +10,27 @@ theme:
     - scheme: default
       primary: blue grey
       accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Chuyển sang chế độ tối
+    - scheme: slate
+      primary: blue grey
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Chuyển sang chế độ sáng
   features:
     - navigation.tabs
     - navigation.sections
     - navigation.expand
     - navigation.top
+    - navigation.indexes
+    - navigation.footer
     - search.highlight
     - search.suggest
+    - search.share
     - content.code.copy
+    - content.code.annotate
 
 nav:
   - Home: index.md
@@ -25,9 +39,38 @@ nav:
 
 markdown_extensions:
   - admonition
-  - pymdownx.superfences
   - pymdownx.details
-  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
   - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - attr_list
+  - md_in_html
   - toc:
       permalink: true
+      toc_depth: 3
+
+plugins:
+  - search:
+      lang: vi
+  - tags
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/QuocBuu
+      name: GitHub
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/quocbuu
+      name: LinkedIn
+  
+extra_css:
+  - stylesheets/extra.css

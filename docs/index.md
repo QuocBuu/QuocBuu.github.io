@@ -1,1 +1,1 @@
-# Embedded Documentation
+# Embedded programming tutorials, projects, and more
