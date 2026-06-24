@@ -1,43 +1,82 @@
-# jekyll-rtd-theme
-[![](https://github.com/rundocs/jekyll-rtd-theme/workflows/CI/badge.svg)][repository]
-[![](https://img.shields.io/gem/v/jekyll-rtd-theme)][rubygem]
-[![](https://img.shields.io/gem/dt/jekyll-rtd-theme)][rubygem]
-[![](https://data.jsdelivr.com/v1/package/gh/rundocs/jekyll-rtd-theme/badge)][cdn]
-[![](https://www.codefactor.io/repository/github/rundocs/jekyll-rtd-theme/badge)][codefactor]
-[![](https://img.shields.io/badge/featured%20on-JekyllThemes-red.svg)](https://jekyll-themes.com)
+---
+sort: 1
+---
 
-Just another documentation theme compatible with GitHub Pages, based on sphinx_rtd_theme
+<div id="nf-toast" class="nf-toast"></div>
 
-![][demo]
+<div class="nf-header">
+  <span class="nf-logo">The NEWs</span>
+</div>
 
-## Notable features
-- Write documents directly, like docsify!
-- Only need one file `_config.yml` to configure site
-- Bundled as a "theme gem" for easier installation/upgrading.
-- Compatible with GitHub Pages.
-- Optimized for search engines with support for Open Graph data.
-- Optimized for search engines with `robots.txt` and `sitemap.xml`.
-- Search engine support
-- Commenting support
-- Google,Baidu,CNZZ Analytics support.
-- UI localized text in English(default), Chinese(中文)
-- And many features waiting for you to discover.
+<div class="nf-feed">
 
-## Roadmap
-See the [open issues][issues] for a list of proposed features (and known issues).
+  <div class="nf-post">
 
-## Documents
-For full documentation, see: [https://rundocs.github.io/jekyll-rtd-theme][site]
+    <div class="nf-post-header">
+      <img src="https://avatars.githubusercontent.com/QuocBuu"
+           class="nf-avatar" alt="QuocBuu"/>
+      <div>
+        <div class="nf-name">Phan Quoc Buu</div>
+        <div class="nf-meta">shared a new project &middot; Jun 2024</div>
+      </div>
+    </div>
 
-## The License
-The theme is available as open source under the terms of the [MIT License][license].
+    <div class="nf-post-body">
+      <p>
+        Just shipped <strong>Archery Game</strong> &mdash; an embedded game running on the
+        STM32L151 microcontroller, built to practice event-driven programming through
+        real game design: Tasks, Signals, State-machines, UML...
+      </p>
+      <a href="projects/archery-game/">
+        <img src="/assets/images/projects/archery-game/gif_archery_game_menu_4x.gif"
+             class="nf-post-img" alt="Archery Game"/>
+      </a>
+      <a href="https://quocbuu.github.io/archery_game/"
+         target="_blank" class="nf-play-btn">
+        &#9654; Play the Simulator
+      </a>
+    </div>
 
+    <div class="nf-stats">
+      <span class="nf-stat-likes">
+        <span class="nf-stat-icon"><i class="fa fa-thumbs-up"></i></span>
+        <span id="likes-count-1">0</span>
+      </span>
+      <span>
+        <span id="comments-count-1">0</span> comments
+        &nbsp;&middot;&nbsp;
+        <span id="shares-count-1">0</span> shares
+      </span>
+    </div>
 
-[repository]: https://github.com/rundocs/jekyll-rtd-theme
-[issues]: https://github.com/rundocs/jekyll-rtd-theme/issues
-[license]: https://github.com/rundocs/jekyll-rtd-theme/blob/master/LICENSE
-[site]: https://rundocs.github.io/jekyll-rtd-theme
-[rubygem]: https://rubygems.org/gems/jekyll-rtd-theme
-[cdn]: https://cdn.jsdelivr.net/gh/rundocs/jekyll-rtd-theme/
-[codefactor]: https://www.codefactor.io/repository/github/rundocs/jekyll-rtd-theme
-[demo]: https://user-images.githubusercontent.com/68011645/88376699-87980500-cdd0-11ea-8900-7bab8c811bc9.png
+    <div class="nf-actions">
+      <button class="nf-action-btn" id="like-btn-1" onclick="toggleLike('1')">
+        <i class="fa fa-thumbs-up"></i> Like
+      </button>
+      <button class="nf-action-btn" onclick="toggleComments('1')">
+        <i class="fa fa-comment"></i> Comment
+      </button>
+      <button class="nf-action-btn" onclick="sharePost('1','https://github.com/QuocBuu/archery_game')">
+        <i class="fa fa-share"></i> Share
+      </button>
+    </div>
+
+    <div class="nf-comments" id="comments-box-1">
+      <div id="comments-list-1"></div>
+      <div class="nf-comment-input-row">
+        <img src="https://avatars.githubusercontent.com/QuocBuu"
+             class="nf-comment-avatar" alt=""/>
+        <input type="text" class="nf-comment-input" id="comment-input-1"
+               placeholder="Write a comment..."
+               onkeydown="if(event.key==='Enter') postComment('1')"/>
+        <button class="nf-comment-send" onclick="postComment('1')">
+          <i class="fa fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="/assets/js/newsfeed.js"></script>

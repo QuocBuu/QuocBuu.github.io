@@ -17,17 +17,10 @@
     {%- if site.copyright -%}
         <div role="contentinfo" class="copyright">
             <p>
-                <i class="fa fa-copyright"></i> {{ __copyright }}
-                {% if site.copyright.since -%}
-                    {{ site.copyright.since | append: "-" }}
-                {%- endif -%}
-                {{ site.time | date: "%Y" }},
-                {{ author }}
-                {% if site.copyright.revision -%}
-                    <span class="commit">
-                        {{ __revision }} <code>{{ commit }}</code>
-                    </span>
-                {%- endif -%}
+                Author: {{ author }}<br>
+                <a href="https://github.com/QuocBuu/"><img src="https://img.shields.io/badge/GitHub-QuocBuu-181717?style=flat&logo=github&logoColor=white" alt="GitHub"></a>
+                <a href="https://www.linkedin.com/in/phan-quoc-buu-549336321"><img src="https://img.shields.io/badge/LinkedIn-QuocBuu-0A66C2?style=flat&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
+                <a href="mailto:pquocbuu@gmail.com"><img src="https://img.shields.io/badge/Gmail-QuocBuu-EA4335?style=flat&logo=gmail&logoColor=white" alt="Gmail"></a>
             </p>
         </div>
     {%- endif -%}

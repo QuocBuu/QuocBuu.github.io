@@ -2,6 +2,6 @@
 sort: 2
 ---
 
-# Test Documentation
+# Projects
 
 {% include list.liquid all=true %}

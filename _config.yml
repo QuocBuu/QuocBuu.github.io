@@ -1,22 +1,18 @@
-title: jekyll-rtd-theme
+title: QuocBuu
 lang: en-US
-description: Just another documentation theme compatible with GitHub Pages, based on sphinx_rtd_theme
+description: Embedded Software Engineer — Portfolio
+author: Quoc Buu
 
-edit: true
+edit: false
 
 copyright:
-  revision: true
+  revision: false
 
 addons:
   - github
-  - gems
-  - analytics
-
-addons_commit: true
 
 theme: null
 
-# sort
 readme_index:
   with_frontmatter: true
 
@@ -31,3 +27,6 @@ exclude:
   - CODE_OF_CONDUCT.md
   - LICENSE
   - jekyll-rtd-theme.gemspec
+  - test/
+  - test-long/
+  - docs/
