@@ -1,30 +1,69 @@
-function search(data) {
-    let text = new URL(location.href).searchParams.get("q");
-    let results = [];
-    for (item of data) {
-        let [caption, context] = [item.title.match(text), item.content.match(text)];
-        if (caption || context) {
-            let result = [`<a href="${item.url}">${item.title}</a>`];
-            if (context) {
-                let min = context.index - 50;
-                let max = context.index + 50;
-                if (min < 0) {
-                    min = 0;
-                }
-                if (max > item.content.length) {
-                    max = item.content.length;
-                }
-                result.push(`<p class="context">${item.content.slice(min, max)}</p>`);
-            }
-            results.push(`<li>${result.join("")}</li>`);
-        }
+function toPlainText(encoded) {
+    if (!encoded) return "";
+    var ta = document.createElement("textarea");
+    ta.innerHTML = encoded;
+    var once = ta.value;
+    var div = document.createElement("div");
+    div.innerHTML = once;
+    var text = (div.textContent || div.innerText || "").replace(/\s+/g, " ").trim();
+    if (text.indexOf("<") !== -1) {
+        var div2 = document.createElement("div");
+        div2.innerHTML = text;
+        text = (div2.textContent || div2.innerText || "").replace(/\s+/g, " ").trim();
     }
-    if (results.length > 0 && text.length > 0) {
-        $("#search-results").html(`<ul class="search">${results.join("")}</ul>`);
+    return text;
+}
+
+function highlight(text, query) {
+    if (!query) return text;
+    var safe = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return text.replace(new RegExp("(" + safe + ")", "gi"), "<mark>$1</mark>");
+}
+
+function search(data) {
+    var q = new URL(location.href).searchParams.get("q") || "";
+    var ql = q.toLowerCase();
+    var rows = [];
+
+    for (var i = 0; i < data.length; i++) {
+        var item  = data[i];
+        var title = item.title || "";
+        var plain = toPlainText(item.content);
+        var url   = item.url || "#";
+
+        var inTitle   = ql.length > 0 && title.toLowerCase().indexOf(ql) !== -1;
+        var inContent = ql.length > 0 && plain.length > 10 && plain.toLowerCase().indexOf(ql) !== -1;
+
+        if (!inTitle && !inContent) continue;
+
+        var snippet = "";
+        if (inContent) {
+            var idx = plain.toLowerCase().indexOf(ql);
+            var lo  = Math.max(0, idx - 70);
+            var hi  = Math.min(plain.length, idx + q.length + 70);
+            snippet = (lo > 0 ? "…" : "") +
+                      highlight(plain.slice(lo, hi), q) +
+                      (hi < plain.length ? "…" : "");
+        } else {
+            snippet = highlight(title, q);
+        }
+
+        rows.push(
+            '<tr class="sr-row">' +
+            '<td class="sr-snippet">' + snippet + '</td>' +
+            '<td class="sr-link"><a href="' + url + '">' + (title || url) + '</a></td>' +
+            '</tr>'
+        );
+    }
+
+    if (rows.length > 0 && q.length > 0) {
+        $("#search-results").html(
+            '<table class="sr-table"><tbody>' + rows.join("") + '</tbody></table>'
+        );
     } else {
         $("#search-results").html("{{ __no_results_found }}");
     }
-    $("#rtd-search-form [name='q']").val(text);
+    $("#rtd-search-form [name='q']").val(q);
 }
 
 function reset() {

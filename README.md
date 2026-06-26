@@ -1,11 +1,15 @@
 ---
 sort: 1
+title: The NEWs
 ---
 
 <div id="nf-toast" class="nf-toast"></div>
 
 <div class="nf-header">
   <span class="nf-logo">The NEWs</span>
+  <button class="nf-expand-btn" id="nf-expand-btn" onclick="toggleFeedWidth()" title="Expand / Collapse">
+    <i class="fa fa-expand" id="nf-expand-icon"></i>
+  </button>
 </div>
 
 <div class="nf-feed">

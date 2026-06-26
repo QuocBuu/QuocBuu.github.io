@@ -50,6 +50,18 @@ function fbPush(path, val) {
     .catch(function () { return null; });
 }
 
+/* ── Expand / Collapse feed width ───────────────────────────────────────── */
+
+function toggleFeedWidth() {
+  var feed = document.querySelector(".nf-feed");
+  var icon = document.getElementById("nf-expand-icon");
+  if (!feed) return;
+  var expanded = feed.classList.toggle("expanded");
+  if (icon) {
+    icon.className = expanded ? "fa fa-compress" : "fa fa-expand";
+  }
+}
+
 /* ── Like ───────────────────────────────────────────────────────────────── */
 
 function toggleLike(id) {
