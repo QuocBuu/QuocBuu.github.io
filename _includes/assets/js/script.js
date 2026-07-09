@@ -14,6 +14,88 @@ function toPlainText(encoded) {
     return text;
 }
 
+var FIREBASE_URL = window.FIREBASE_URL || "https://quocbuu-portfolio-default-rtdb.firebaseio.com";
+
+function fbUrl(path) {
+    return FIREBASE_URL.replace(/\/$/, "") + "/" + path + ".json";
+}
+
+function fbGet(path) {
+    if (!FIREBASE_URL) return Promise.resolve(null);
+    return fetch(fbUrl(path))
+        .then(function(r) { return r.ok ? r.json() : null; })
+        .catch(function() { return null; });
+}
+
+function fbSet(path, val) {
+    if (!FIREBASE_URL) return Promise.resolve(null);
+    return fetch(fbUrl(path), {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(val)
+    }).catch(function() { return null; });
+}
+
+function fbTransaction(path, updateFn) {
+    return fbGet(path).then(function(cur) {
+        var next = updateFn(cur);
+        return fbSet(path, next).then(function() { return next; });
+    });
+}
+
+function normalizePath(path) {
+    return (path || "").replace(/\/+$/, "") || "/";
+}
+
+function setViewCount(id, count) {
+    var viewEls = [
+        document.getElementById("views-count-" + id),
+        document.getElementById("project-views-count-" + id)
+    ];
+    for (var i = 0; i < viewEls.length; i++) {
+        if (viewEls[i]) {
+            viewEls[i].textContent = Number(count || 0).toLocaleString("en-US");
+        }
+    }
+}
+
+function loadViewCount(id) {
+    return fbGet("posts/" + id + "/views").then(function(count) {
+        setViewCount(id, count || 0);
+        return count || 0;
+    });
+}
+
+function shouldCountUniqueView(id, ttlMs) {
+    var key = "viewed-post-" + id;
+    var lastSeen = parseInt(localStorage.getItem(key) || "0", 10);
+    var now = Date.now();
+
+    if (lastSeen && now - lastSeen < ttlMs) {
+        return false;
+    }
+
+    localStorage.setItem(key, String(now));
+    return true;
+}
+
+function trackProjectView(id, expectedPath) {
+    if (!FIREBASE_URL) return;
+
+    var currentPath = normalizePath(location.pathname);
+    var targetPath = normalizePath(expectedPath);
+    var oneDayMs = 24 * 60 * 60 * 1000;
+
+    if (currentPath !== targetPath) return;
+    if (!shouldCountUniqueView(id, oneDayMs)) return;
+
+    fbTransaction("posts/" + id + "/views", function(cur) {
+        return (cur || 0) + 1;
+    }).then(function(count) {
+        setViewCount(id, count);
+    });
+}
+
 function highlight(text, query) {
     if (!query) return text;
     var safe = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -101,4 +183,7 @@ $(document).ready(function() {
     anchors.add();
     SphinxRtdTheme.Navigation.reset = reset;
     SphinxRtdTheme.Navigation.enable(true);
+
+    loadViewCount("archery-game");
+    trackProjectView("archery-game", "{{ site.baseurl }}/projects/archery-game/");
 });

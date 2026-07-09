@@ -15,13 +15,18 @@ title: The NEWs
 <div class="nf-feed">
 
   <div class="nf-post" data-post-id="archery-game">
-
     <div class="nf-post-header">
       <img src="https://avatars.githubusercontent.com/QuocBuu"
            class="nf-avatar" alt="QuocBuu"/>
       <div>
         <div class="nf-name">Phan Quoc Buu</div>
-        <div class="nf-meta">shared a new project &middot; Jun 2024</div>
+        <div class="nf-meta">
+          <span>shared a new project &middot; Jun 2024</span>
+          <span class="nf-view-badge" id="views-badge-archery-game">
+            <i class="fa fa-eye"></i>
+            <span id="views-count-archery-game">0</span> views
+          </span>
+        </div>
       </div>
     </div>
 
@@ -70,12 +75,34 @@ title: The NEWs
       <div class="nf-comment-input-row">
         <img src="https://avatars.githubusercontent.com/QuocBuu"
              class="nf-comment-avatar" alt=""/>
-        <input type="text" class="nf-comment-input" id="comment-input-archery-game"
-               placeholder="Write a comment..."
-               onkeydown="if(event.key==='Enter') postComment('archery-game')"/>
-        <button class="nf-comment-send" onclick="postComment('archery-game')">
-          <i class="fa fa-paper-plane"></i>
-        </button>
+        <div class="nf-comment-composer">
+          <input type="text" class="nf-comment-input" id="comment-input-archery-game"
+                 placeholder="Write a comment..."
+                 onkeydown="if(event.key==='Enter') postComment('archery-game')"/>
+          <div class="nf-comment-editing" id="comment-editing-archery-game" hidden>
+            <span>Editing your comment</span>
+            <button type="button" class="nf-comment-cancel-edit" onclick="cancelEditComment('archery-game')">
+              Cancel
+            </button>
+          </div>
+          <div class="nf-comment-preview" id="comment-preview-archery-game" hidden>
+            <img id="comment-preview-img-archery-game" alt="Comment image preview"/>
+            <button type="button" class="nf-comment-preview-remove" onclick="clearCommentImage('archery-game')" aria-label="Remove image">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+          <div class="nf-comment-tools">
+            <label class="nf-comment-attach" for="comment-image-archery-game" title="Attach image">
+              <i class="fa fa-camera"></i>
+              <span>Photo</span>
+            </label>
+            <input type="file" id="comment-image-archery-game" class="nf-comment-file"
+                   accept="image/*" onchange="handleCommentImage(event, 'archery-game')"/>
+            <button class="nf-comment-send" onclick="postComment('archery-game')">
+              <i class="fa fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 

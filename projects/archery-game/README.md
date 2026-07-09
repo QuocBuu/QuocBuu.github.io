@@ -6,6 +6,11 @@ sort: 1
 
 > Embedded game built on the **AK Embedded Base Kit (STM32L151)** — a hands-on project to learn event-driven programming through game design.
 
+<div class="proj-view-counter" id="project-view-counter-archery-game">
+  <i class="fa fa-eye"></i>
+  <span id="project-views-count-archery-game">0</span> views
+</div>
+
 <div align="center">
   <img src="{{ '/assets/images/projects/archery-game/gif_archery_game_menu_4x.gif' | relative_url }}" width="480" alt="Archery Game Menu"/>
 </div>

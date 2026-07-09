@@ -62,6 +62,16 @@ p {
     color: #1c1e21;
 }
 
+.nf-view-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #7ea7cf;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+}
+
 .nf-post-header {
     display: flex;
     align-items: center;
@@ -76,7 +86,14 @@ p {
     flex-shrink: 0;
 }
 .nf-post-header .nf-name  { font-weight: 700; font-size: 14px; color: #1c1e21; }
-.nf-post-header .nf-meta  { font-size: 12px; color: #65676b; }
+.nf-post-header .nf-meta  {
+    font-size: 12px;
+    color: #65676b;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
 
 .nf-post-body { padding: 0 16px 10px; }
 .nf-post-body p { margin: 0 0 10px; font-size: 14px; line-height: 1.5; }
@@ -196,10 +213,32 @@ p {
     display: flex;
     gap: 8px;
     margin-top: 10px;
+    align-items: flex-start;
+}
+.nf-comment-composer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.nf-comment-editing {
+    display: inline-flex;
     align-items: center;
+    gap: 8px;
+    color: #3b5998;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 10px;
+}
+.nf-comment-cancel-edit {
+    border: none;
+    background: transparent;
+    color: #65676b;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0;
 }
 .nf-comment-input {
-    flex: 1;
     border: none;
     background: #f0f2f5;
     border-radius: 20px;
@@ -209,6 +248,55 @@ p {
     outline: none;
 }
 .nf-comment-input:focus { background: #e4e6eb; }
+.nf-comment-preview {
+    position: relative;
+    width: fit-content;
+    max-width: 180px;
+    margin-left: 10px;
+}
+.nf-comment-preview img {
+    display: block;
+    width: 100%;
+    max-width: 180px;
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 1px solid #d8dbe0;
+}
+.nf-comment-preview-remove {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(28, 30, 33, 0.82);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.nf-comment-tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+.nf-comment-attach {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #65676b;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+}
+.nf-comment-attach:hover { background: #f0f2f5; }
+.nf-comment-file { display: none; }
 .nf-comment-send {
     background: #1877f2;
     color: #fff;
@@ -221,6 +309,38 @@ p {
     flex-shrink: 0;
 }
 .nf-comment-send:hover { background: #145dbf; }
+.nf-comment-text {
+    margin-top: 4px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+.nf-comment-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 6px;
+}
+.nf-comment-edit-btn {
+    border: none;
+    background: transparent;
+    color: #3b5998;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+}
+.nf-comment-edited {
+    color: #8a8d91;
+    font-size: 12px;
+}
+.nf-comment-image {
+    display: block;
+    margin-top: 8px;
+    max-width: 180px;
+    max-height: 180px;
+    border-radius: 14px;
+    object-fit: cover;
+}
 
 .nf-share-toast {
     position: fixed;
@@ -343,6 +463,20 @@ mark {
 }
 .proj-link-btn .fa { font-size: 16px; }
 
+.proj-view-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0 18px;
+    padding: 8px 12px;
+    background: #eef4fb;
+    color: #2d4373;
+    border: 1px solid #cddbef;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
 @media screen and (max-width: 600px) {
     .nf-logo { font-size: 19px; }
 }
@@ -403,4 +537,14 @@ footer {
             padding: 1em;
         }
     }
+}
+
+.wy-menu-vertical p.caption .caption-text {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.wy-menu-vertical p.caption .caption-text:hover,
+.wy-menu-vertical p.caption .caption-text:focus {
+    text-decoration: underline;
 }
