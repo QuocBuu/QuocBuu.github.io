@@ -33,6 +33,12 @@ function fbSet(path, val) {
   }).catch(function () {});
 }
 
+function fbDelete(path) {
+  return fetch(fbUrl(path), {
+    method: "DELETE"
+  }).catch(function () {});
+}
+
 function fbTransaction(path, updateFn) {
   return fbGet(path).then(function (cur) {
     var next = updateFn(cur);
@@ -95,11 +101,13 @@ function toggleLike(id) {
       return Math.max(0, (cur || 0) + delta);
     }).then(function (count) {
       setLikeCount(id, count);
+      toast(liked ? "Like removed" : "Thank you");
     });
   } else {
     var count = Math.max(0, parseInt(localStorage.getItem("lc-" + id) || "0", 10) + delta);
     localStorage.setItem("lc-" + id, count);
     setLikeCount(id, count);
+    toast(liked ? "Like removed" : "Thank you");
   }
 }
 
@@ -123,45 +131,8 @@ function getCommentImageKey(id) {
   return "comment-image-" + id;
 }
 
-function getCommentEditKey(id) {
-  return "comment-edit-" + id;
-}
-
 function getCommentDraftImage(id) {
   return localStorage.getItem(getCommentImageKey(id)) || "";
-}
-
-function getEditingComment(id) {
-  var raw = localStorage.getItem(getCommentEditKey(id));
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw);
-  } catch (_) {
-    localStorage.removeItem(getCommentEditKey(id));
-    return null;
-  }
-}
-
-function setEditingComment(id, data) {
-  if (data) {
-    localStorage.setItem(getCommentEditKey(id), JSON.stringify(data));
-  } else {
-    localStorage.removeItem(getCommentEditKey(id));
-  }
-  updateEditingState(id);
-}
-
-function updateEditingState(id) {
-  var box = document.getElementById("comment-editing-" + id);
-  var sendBtn = document.querySelector("#comments-box-" + id + " .nf-comment-send");
-  var editing = getEditingComment(id);
-
-  if (box) box.hidden = !editing;
-  if (sendBtn) {
-    sendBtn.innerHTML = editing
-      ? '<i class="fa fa-save"></i>'
-      : '<i class="fa fa-paper-plane"></i>';
-  }
 }
 
 function setCommentDraftImage(id, dataUrl) {
@@ -191,29 +162,6 @@ function clearCommentImage(id) {
   var fileInput = document.getElementById("comment-image-" + id);
   if (fileInput) fileInput.value = "";
   setCommentDraftImage(id, "");
-}
-
-function startEditComment(id, key) {
-  var card = document.querySelector('.nf-comment-item[data-comment-key="' + key + '"]');
-  if (!card) return;
-
-  var text = card.getAttribute("data-comment-text") || "";
-  var image = card.getAttribute("data-comment-image") || "";
-  var ownerId = card.getAttribute("data-comment-owner") || "";
-
-  if (ownerId !== getViewerId()) return;
-
-  document.getElementById("comment-input-" + id).value = text;
-  setCommentDraftImage(id, image);
-  setEditingComment(id, { key: key });
-  toggleCommentsOpen(id);
-  document.getElementById("comment-input-" + id).focus();
-}
-
-function cancelEditComment(id) {
-  setEditingComment(id, null);
-  document.getElementById("comment-input-" + id).value = "";
-  clearCommentImage(id);
 }
 
 function toggleCommentsOpen(id) {
@@ -273,7 +221,6 @@ function postComment(id) {
   var input = document.getElementById("comment-input-" + id);
   var text = input.value.trim();
   var image = getCommentDraftImage(id);
-  var editing = getEditingComment(id);
   if (!text && !image) return;
 
   var name = localStorage.getItem("nf-name");
@@ -291,50 +238,54 @@ function postComment(id) {
   };
 
   if (FIREBASE_URL) {
-    if (editing && editing.key) {
-      fbGet("posts/" + id + "/comments/" + editing.key).then(function (existing) {
-        if (!existing || existing.ownerId !== getViewerId()) {
-          toast("You can only edit your own comment.");
-          cancelEditComment(id);
-          return;
-        }
-
-        comment.time = existing.time || comment.time;
-        comment.editedAt = Date.now();
-        fbSet("posts/" + id + "/comments/" + editing.key, comment).then(function () {
-          input.value = "";
-          clearCommentImage(id);
-          setEditingComment(id, null);
-          loadPost(id);
-        });
-      });
-    } else {
-      fbPush("posts/" + id + "/comments", comment).then(function () {
-        input.value = "";
-        clearCommentImage(id);
-        loadPost(id);
-      });
-    }
+    fbPush("posts/" + id + "/comments", comment).then(function () {
+      input.value = "";
+      clearCommentImage(id);
+      loadPost(id);
+      toast("Thank for your feedback");
+    });
   } else {
     var key = "cms-" + id;
     var arr = JSON.parse(localStorage.getItem(key) || "[]");
-    if (editing && editing.key) {
-      var idx = parseInt(editing.key, 10);
-      if (!isNaN(idx) && arr[idx] && arr[idx].ownerId === getViewerId()) {
-        comment.time = arr[idx].time || comment.time;
-        comment.editedAt = Date.now();
-        arr[idx] = comment;
-      }
-    } else {
-      arr.push(comment);
-    }
+    arr.push(comment);
     localStorage.setItem(key, JSON.stringify(arr));
     input.value = "";
     clearCommentImage(id);
-    setEditingComment(id, null);
     document.getElementById("comments-count-" + id).textContent = arr.length;
     loadPost(id);
+    toast("Thank for your feedback");
   }
+}
+
+function deleteComment(id, key) {
+  if (FIREBASE_URL) {
+    fbGet("posts/" + id + "/comments/" + key).then(function (existing) {
+      if (!existing || existing.ownerId !== getViewerId()) {
+        toast("You can only delete your own comment.");
+        return;
+      }
+
+      fbDelete("posts/" + id + "/comments/" + key).then(function () {
+        loadPost(id);
+        toast("Comment deleted");
+      });
+    });
+    return;
+  }
+
+  var storeKey = "cms-" + id;
+  var arr = JSON.parse(localStorage.getItem(storeKey) || "[]");
+  var idx = parseInt(key, 10);
+  if (isNaN(idx) || !arr[idx] || arr[idx].ownerId !== getViewerId()) {
+    toast("You can only delete your own comment.");
+    return;
+  }
+
+  arr.splice(idx, 1);
+  localStorage.setItem(storeKey, JSON.stringify(arr));
+  document.getElementById("comments-count-" + id).textContent = arr.length;
+  loadPost(id);
+  toast("Comment deleted");
 }
 
 function renderComment(id, key, c) {
@@ -342,24 +293,21 @@ function renderComment(id, key, c) {
   var el = document.createElement("div");
   el.className = "nf-comment-item";
   el.setAttribute("data-comment-key", key);
-  el.setAttribute("data-comment-text", c.text || "");
-  el.setAttribute("data-comment-image", c.image || "");
   el.setAttribute("data-comment-owner", c.ownerId || "");
   var init = encodeURIComponent(((c.author || "?")[0]).toUpperCase());
   var textHtml = c.text ? '<div class="nf-comment-text">' + esc(c.text) + "</div>" : "";
   var imageHtml = c.image
     ? '<img src="' + c.image + '" class="nf-comment-image" alt="Comment image"/>'
     : "";
-  var editHtml = c.ownerId === getViewerId()
-    ? '<button type="button" class="nf-comment-edit-btn" onclick="startEditComment(\'' + id + '\', \'' + key + '\')">Edit</button>'
+  var deleteHtml = c.ownerId === getViewerId()
+    ? '<button type="button" class="nf-comment-delete-btn" onclick="deleteComment(\'' + id + '\', \'' + key + '\')" aria-label="Delete comment"><i class="fa fa-trash"></i></button>'
     : "";
-  var editedHtml = c.editedAt ? '<span class="nf-comment-edited">Edited</span>' : "";
   el.innerHTML =
     '<img src="https://ui-avatars.com/api/?name=' + init +
     '&background=dde3ee&color=3b5998&size=32" class="nf-comment-avatar" alt=""/>' +
     '<div class="nf-comment-bubble"><strong>' +
     esc(c.author) + '</strong>' + textHtml + imageHtml +
-    '<div class="nf-comment-meta">' + editHtml + editedHtml + "</div></div>";
+    '<div class="nf-comment-meta">' + deleteHtml + "</div></div>";
   list.appendChild(el);
 }
 
@@ -368,13 +316,13 @@ function renderComment(id, key, c) {
 function sharePost(id, url) {
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(url).then(function () {
-      toast("GitHub link copied!");
+      toast("Copy link successed");
     }).catch(function () {
       window.prompt("Copy this link:", url);
     });
   } else {
     window.prompt("Copy this link:", url);
-    toast("GitHub link copied!");
+    toast("Copy link successed");
   }
 
   if (FIREBASE_URL) {
@@ -399,12 +347,23 @@ function esc(s) {
     .replace(/>/g, "&gt;");
 }
 
-function toast(msg) {
+var toastTimer = null;
+
+function toast(title, body) {
   var el = document.getElementById("nf-toast");
   if (!el) return;
-  el.textContent = msg;
+  var titleEl = document.getElementById("nf-toast-title");
+  var bodyEl = document.getElementById("nf-toast-body");
+  if (titleEl) titleEl.textContent = title || "Thank you";
+  if (bodyEl) {
+    bodyEl.textContent = body || "";
+    bodyEl.hidden = !body;
+  }
   el.classList.add("show");
-  setTimeout(function () { el.classList.remove("show"); }, 2500);
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () {
+    el.classList.remove("show");
+  }, 2200);
 }
 
 /* ── Init: load state on page open ─────────────────────────────────────── */
@@ -459,7 +418,6 @@ document.addEventListener("DOMContentLoaded", function () {
   posts.forEach(function (el) {
     var id = el.getAttribute("data-post-id");
     updateCommentPreview(id, getCommentDraftImage(id));
-    updateEditingState(id);
     loadPost(id);
   });
 });

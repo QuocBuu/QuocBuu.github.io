@@ -3,7 +3,10 @@ sort: 1
 title: The NEWs
 ---
 
-<div id="nf-toast" class="nf-toast"></div>
+<div id="nf-toast" class="nf-toast" aria-live="polite" aria-atomic="true">
+  <div class="nf-toast-title" id="nf-toast-title">Thank you</div>
+  <div class="nf-toast-body" id="nf-toast-body" hidden></div>
+</div>
 
 <div class="nf-header">
   <span class="nf-logo">The NEWs</span>
@@ -79,12 +82,6 @@ title: The NEWs
           <input type="text" class="nf-comment-input" id="comment-input-archery-game"
                  placeholder="Write a comment..."
                  onkeydown="if(event.key==='Enter') postComment('archery-game')"/>
-          <div class="nf-comment-editing" id="comment-editing-archery-game" hidden>
-            <span>Editing your comment</span>
-            <button type="button" class="nf-comment-cancel-edit" onclick="cancelEditComment('archery-game')">
-              Cancel
-            </button>
-          </div>
           <div class="nf-comment-preview" id="comment-preview-archery-game" hidden>
             <img id="comment-preview-img-archery-game" alt="Comment image preview"/>
             <button type="button" class="nf-comment-preview-remove" onclick="clearCommentImage('archery-game')" aria-label="Remove image">

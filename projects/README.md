@@ -20,7 +20,7 @@ title: Projects
     <tr>
       <td>1</td>
       <td><a href="archery-game/">Archery Game</a></td>
-      <td>Embedded game on STM32L151 — event-driven, OLED, joystick</td>
+      <td>Embedded game on STM32L151 — event-driven, OLED, Buttons</td>
       <td>Jun 2024</td>
       <td>Jun 2024</td>
       <td>v1.0</td>
