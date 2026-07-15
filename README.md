@@ -1,11 +1,11 @@
 # QuocBuu.github.io
 
-Chào bạn, cảm ơn đã ghé qua repo này.
+Hello, and thank you for visiting this repository.
 
-Mình tạo page này để chia sẻ những project tự thân phát triển, chủ yếu là các sản phẩm và thử nghiệm cá nhân trong quá trình học tập, làm việc và khám phá thêm về embedded software.
+I created this page to share projects I have developed independently, mainly personal products and experiments throughout my learning journey, work, and further exploration in embedded software.
 
-Mình rất mong nhận được góp ý, nhận xét và chia sẻ từ mọi người để các project ngày càng hoàn thiện hơn.
+I truly appreciate any feedback, comments, and shared ideas so these projects can continue to improve over time.
 
-Bạn có thể xem trực tiếp website tại đây:
+You can visit the website here:
 
 [https://quocbuu.github.io/](https://quocbuu.github.io/)
