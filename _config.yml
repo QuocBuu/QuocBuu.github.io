@@ -13,9 +13,6 @@ addons:
 
 theme: null
 
-readme_index:
-  with_frontmatter: true
-
 sass:
   style: compressed
 

@@ -1,0 +1,110 @@
+---
+sort: 1
+title: The NEWs
+---
+
+<div id="nf-toast" class="nf-toast" aria-live="polite" aria-atomic="true">
+  <div class="nf-toast-title" id="nf-toast-title">Thank you</div>
+  <div class="nf-toast-body" id="nf-toast-body" hidden></div>
+</div>
+
+<div class="nf-header">
+  <span class="nf-logo">The NEWs</span>
+  <button class="nf-expand-btn" id="nf-expand-btn" onclick="toggleFeedWidth()" title="Expand / Collapse">
+    <i class="fa fa-expand" id="nf-expand-icon"></i>
+  </button>
+</div>
+
+<div class="nf-feed">
+
+  <div class="nf-post" data-post-id="archery-game">
+    <div class="nf-post-header">
+      <img src="https://avatars.githubusercontent.com/QuocBuu"
+           class="nf-avatar" alt="QuocBuu"/>
+      <div>
+        <div class="nf-name">Phan Quoc Buu</div>
+        <div class="nf-meta">
+          <span>shared a new project &middot; Jun 2024</span>
+          <span class="nf-view-badge" id="views-badge-archery-game">
+            <i class="fa fa-eye"></i>
+            <span id="views-count-archery-game">0</span> views
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="nf-post-body">
+      <p>
+        Just shipped <strong>Archery Game</strong> &mdash; an embedded game running on the
+        STM32L151 microcontroller, built to practice event-driven programming through
+        real game design: Tasks, Signals, State-machines, UML...
+      </p>
+      <a href="projects/archery-game/">
+        <img src="/assets/images/projects/archery-game/gif_archery_game_menu_4x.gif"
+             class="nf-post-img" alt="Archery Game"/>
+      </a>
+      <a href="https://quocbuu.github.io/archery_game/"
+         target="_blank" class="nf-play-btn">
+        &#9654; Play the Simulator
+      </a>
+    </div>
+
+    <div class="nf-stats">
+      <span class="nf-stat-likes">
+        <span class="nf-stat-icon"><i class="fa fa-thumbs-up"></i></span>
+        <span id="likes-count-archery-game">0</span>
+      </span>
+      <span>
+        <span id="comments-count-archery-game">0</span> comments
+        &nbsp;&middot;&nbsp;
+        <span id="shares-count-archery-game">0</span> shares
+      </span>
+    </div>
+
+    <div class="nf-actions">
+      <button class="nf-action-btn" id="like-btn-archery-game" onclick="toggleLike('archery-game')">
+        <i class="fa fa-thumbs-up"></i> Like
+      </button>
+      <button class="nf-action-btn" onclick="toggleComments('archery-game')">
+        <i class="fa fa-comment"></i> Comment
+      </button>
+      <button class="nf-action-btn" onclick="sharePost('archery-game','https://github.com/QuocBuu/archery_game')">
+        <i class="fa fa-share"></i> Share
+      </button>
+    </div>
+
+    <div class="nf-comments" id="comments-box-archery-game">
+      <div id="comments-list-archery-game"></div>
+      <div class="nf-comment-input-row">
+        <img src="https://avatars.githubusercontent.com/QuocBuu"
+             class="nf-comment-avatar" alt=""/>
+        <div class="nf-comment-composer">
+          <input type="text" class="nf-comment-input" id="comment-input-archery-game"
+                 placeholder="Write a comment..."
+                 onkeydown="if(event.key==='Enter') postComment('archery-game')"/>
+          <div class="nf-comment-preview" id="comment-preview-archery-game" hidden>
+            <img id="comment-preview-img-archery-game" alt="Comment image preview"/>
+            <button type="button" class="nf-comment-preview-remove" onclick="clearCommentImage('archery-game')" aria-label="Remove image">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+          <div class="nf-comment-tools">
+            <label class="nf-comment-attach" for="comment-image-archery-game" title="Attach image">
+              <i class="fa fa-camera"></i>
+              <span>Photo</span>
+            </label>
+            <input type="file" id="comment-image-archery-game" class="nf-comment-file"
+                   accept="image/*" onchange="handleCommentImage(event, 'archery-game')"/>
+            <button class="nf-comment-send" onclick="postComment('archery-game')">
+              <i class="fa fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="/assets/js/newsfeed.js"></script>

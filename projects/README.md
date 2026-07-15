@@ -1,6 +1,7 @@
 ---
 sort: 2
 title: Projects
+permalink: /projects/
 ---
 
 # Projects

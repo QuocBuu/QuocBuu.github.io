@@ -1,6 +1,7 @@
 ---
 sort: 1
 title: Archery Game
+permalink: /projects/archery-game/
 ---
 
 <div class="proj-title-row">
